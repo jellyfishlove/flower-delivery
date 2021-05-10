@@ -2,6 +2,7 @@
 
 # 예제 - 꽃배달 (리포트)
 ![캡처](https://user-images.githubusercontent.com/80744199/111271409-7c9e2780-8674-11eb-8d56-37fc0bd83ecf.PNG)
+![image](https://user-images.githubusercontent.com/80744199/117618717-52b33e00-b1a9-11eb-917b-6dafcedd86e8.png)
 
 
 본 예제는 MSA/DDD/Event Storming/EDA 를 포괄하는 분석/설계/구현/운영 전단계를 커버하도록 구성한 예제입니다.
