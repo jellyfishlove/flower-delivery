@@ -115,8 +115,7 @@
   ![image](https://user-images.githubusercontent.com/487999/79684144-2a893200-826a-11ea-9a01-79927d3a0107.png)
 
 ## TO-BE 조직 (Vertically-Aligned)
-  ![image](https://user-images.githubusercontent.com/487999/79684159-3543c700-826a-11ea-8d5f-a3fc0c4cad87.png)
-
+  ![image](https://user-images.githubusercontent.com/80744199/117759050-10980400-b25e-11eb-845d-2bffcaaef09e.png)
 
 ## Event Storming 결과
 * MSAEz 로 모델링한 이벤트스토밍 결과: 
