@@ -453,13 +453,18 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 # 운영
 
 ## CI/CD 설정
+
 ## 배포
 
+
 **AWS IAM User Access Key 생성**
+
 IAM > 액세스 관리 > 사용자 > 보안 자격 증명
+
 액세스 키 만들기 > Access Key, Private Key 별도 보관
 
 **AWS ECR 생성**
+
 
 ECR > 리포지토리 생성
 
