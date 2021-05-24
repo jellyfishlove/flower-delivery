@@ -530,7 +530,7 @@ docker push 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-oauth:lates
 
 **컨테이너라이징**
 
-디플로이 생성
+<디플로이 생성>
 
 kubectl create deploy delivery --image=052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-delivery:latest
 
