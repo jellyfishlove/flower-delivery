@@ -453,6 +453,64 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 # 운영
 
 ## CI/CD 설정
+## 배포
+
+**AWS IAM User Access Key 생성**
+IAM > 액세스 관리 > 사용자 > 보안 자격 증명
+액세스 키 만들기 > Access Key, Private Key 별도 보관
+
+**AWS ECR 생성**
+ECR > 리포지토리 생성
+서비스 별 리포지토리 생성
+052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-delivery
+052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-gateway
+052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-order
+052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-ordermanagement
+052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-payment
+
+**클러스터 생성 EKS**
+eksctl create cluster --name user03-flowerdelivery --version 1.17 --nodegroup-name standard-workers --node-type t3.medium --nodes 4 --nodes-min 1 --nodes-max 4
+
+**클러스터 토큰 가져오기**
+aws eks --region ap-northeast-2 update-kubeconfig --name user03-flowerdelivery
+
+**ECR 로그인**
+docker login --username AWS -p $(aws ecr get-login-password --region ap-northeast-2) 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/
+
+**Maven 빌드**
+mvn package -Dmaven.test.skip=true
+
+**도커라이징**
+docker build -t 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-delivery:latest .
+docker build -t 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-gateway:latest .
+docker build -t 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-order:latest .
+docker build -t 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-order:latest .
+docker build -t 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-payment:latest .
+docker build -t 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-oauth:latest .
+
+**ECR 도커 이미지 푸시**
+docker push 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-delivery:latest
+docker push 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-gateway:latest
+docker push 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-order:latest
+docker push 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-ordermanagement:latest
+docker push 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-payment:latest
+docker push 052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-oauth:latest
+
+**컨테이너라이징**
+
+디플로이 생성
+kubectl create deploy delivery --image=052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-delivery:latest
+kubectl expose deploy delivery --type=ClusterIP --port=8080
+kubectl create deploy gateway--image=052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-gateway:latest
+kubectl expose deploy gateway --type=LoadBalancer --port=8080
+kubectl create deploy order --image=052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-order:latest
+kubectl expose deploy order --type=ClusterIP --port=8080
+kubectl create deploy ordermanagement --image=052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-ordermanagement:latest
+kubectl expose deploy ordermanagement --type=ClusterIP --port=8080
+kubectl create deploy payment --image=052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-payment:latest
+kubectl expose deploy payment --type=ClusterIP" --port=8080
+kubectl create deploy oauth --image=052937454741.dkr.ecr.ap-northeast-2.amazonaws.com/user03-oauth :latest
+kubectl expose deploy oauth --type=ClusterIP --port=8080
 
 
 각 구현체들은 각자의 source repository 에 구성되었고, 사용한 CI/CD 플랫폼은 GCP를 사용하였으며, pipeline build script 는 각 프로젝트 폴더 이하에 cloudbuild.yml 에 포함되었다.
